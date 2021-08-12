@@ -1,7 +1,10 @@
 package com.gruebleens.spaceodyssey;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
+
 
 public class GameActivity extends AppCompatActivity {
 
@@ -11,7 +14,11 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        _gameView = new GameView(this);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point(); // Load the resolution into Point object
+        display.getSize(size);
+
+        _gameView = new GameView(this, size.x, size.y);
         setContentView(_gameView);
     }
 
