@@ -90,19 +90,39 @@ public class GameView extends SurfaceView implements Runnable {
             Log.e("GameView", "Failed to load sound files");
         }
 
-        _prefs = 
+        _prefs = context.getSharedPreferences("HiScores", context.MODE_PRIVATE);
+        _editor = _prefs.edit();
+        _bestTime = _prefs.getLong("fastestTime", 1000000);
 
-        /* _playerShip = new PlayerSpaceship(context, x, y);         // Init ships
-        enemy1 = new EnemyShip(context, x, y);
-        enemy2 = new EnemyShip(context, x, y);
-        enemy3 = new EnemyShip(context, x, y);
+        _startGame();
+    }
 
-        int numSpec = 50; // Init stardust
+    private void _startGame() {
+        _soundPool.play(start, 1, 1, 0, 0, 1);
 
+        _playerShip = new PlayerSpaceship(_context, _screenX, _screenY); // Init ships
+        enemy1 = new EnemyShip(_context, _screenX, _screenY);
+        enemy2 = new EnemyShip(_context, _screenX, _screenY);
+        enemy3 = new EnemyShip(_context, _screenX, _screenY);
+        if(_screenX > 1000)
+            enemy4 = new EnemyShip(_context, _screenX, _screenY);
+        if(_screenX > 1200)
+            enemy5 = new EnemyShip(_context, _screenX, _screenY);
+
+        int numSpec = 400; // Init stardust
         for(int i = 0; i < numSpec; ++i) {
             StarDust spec = new StarDust(x, y);
             dustList.add(spec);
-        } */
+        }
+
+        // Reset time and distance
+        _distanceRemaining = 10000; // 10 km
+        _timeTaken         = 0;
+        _timeStarted       = System.currentTimeMillis();
+
+        _isGameOver = false;
+
+        _soundPool.play(start, 1, 1, 0, 0, 1);
     }
 
     @Override
@@ -209,4 +229,6 @@ public class GameView extends SurfaceView implements Runnable {
         }
         catch (InterruptedException e) {}
     }
+
+
 }
